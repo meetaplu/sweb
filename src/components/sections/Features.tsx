@@ -1,11 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import { TextChoreography, MaskReveal } from "@/src/components/TextChoreography";
-
-gsap.registerPlugin(ScrollTrigger);
+import React from "react";
+import { MaskReveal } from "@/src/components/TextChoreography";
 
 const features = [
   {
@@ -51,96 +47,47 @@ const features = [
 ];
 
 export function Features() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Title animation with scroll trigger
-    if (titleRef.current) {
-      gsap.from(titleRef.current, {
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 60%",
-        },
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-      });
-    }
-
-    // Staggered card animations with parallax
-    cardsRef.current.forEach((card, index) => {
-      // Parallax effect
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          end: "top 20%",
-          scrub: 1,
-          markers: false,
-        },
-        y: -30 * (index % 2 === 0 ? 1 : -1),
-      });
-
-      // Fade and scale animation
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 75%",
-        },
-        opacity: 0,
-        scale: 0.95,
-        duration: 0.6,
-        delay: index * 0.1,
-      });
-    });
-  }, []);
-
   return (
-    <section
-      ref={containerRef}
-      className="min-h-screen py-32 px-6 bg-background relative"
-    >
-      {/* Parallax background */}
+    <section className="relative min-h-screen overflow-hidden px-6 py-32">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-x-0 top-0 h-full bg-gradient-to-b from-transparent via-transparent to-[#111111] opacity-80" />
+      </div>
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-900/10 rounded-full filter blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-900/10 rounded-full filter blur-3xl" />
+        <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-blue-900/10 blur-3xl" />
+        <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-purple-900/10 blur-3xl" />
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <h2
-          ref={titleRef}
-          className="text-5xl md:text-6xl font-bold text-center mb-4"
-        >
-          Why Choose Gem Tokens?
-        </h2>
-        <p className="text-center text-muted text-xl mb-16 max-w-2xl mx-auto">
-          Own certified precious gemstones with blockchain transparency and fractional access
-        </p>
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <MaskReveal direction="up" className="mb-4 text-center">
+          <h2 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+            Why Choose Gem Tokens?
+          </h2>
+        </MaskReveal>
+        <MaskReveal direction="up" delay={0.1} className="mx-auto mb-16 max-w-2xl text-center text-xl text-muted">
+          Own certified precious gemstones with blockchain transparency and fractional access.
+        </MaskReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <MaskReveal
               key={index}
-              direction={index % 4 === 0 ? "left" : index % 4 === 3 ? "right" : "up"}
-              delay={index * 0.08}
+              direction={index % 2 === 0 ? "left" : "right"}
+              delay={0.08 * index}
             >
-              <div
-                ref={(el) => {
-                  if (el) cardsRef.current[index] = el;
-                }}
-                className="p-6 rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 hover:border-amber-500 transition-all duration-300 group h-full transform hover:scale-105"
-              >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
+              <div className="group h-full rounded-2xl border border-gray-800 bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-6 transition-all duration-500 hover:-translate-y-2 hover:border-amber-500">
+                <div className="mb-4 flex h-14 items-center justify-start transition-transform duration-300 group-hover:scale-110">
+                  {index % 4 === 0 ? (
+                    <img src="/Red.png" alt="Red gem" className="h-12 w-12 object-contain" />
+                  ) : index % 4 === 1 ? (
+                    <img src="/Blue.png" alt="Blue gem" className="h-12 w-12 object-contain" />
+                  ) : index % 4 === 2 ? (
+                    <img src="/Green.png" alt="Green gem" className="h-12 w-12 object-contain" />
+                  ) : (
+                    <img src="/Yellow.png" alt="Yellow gem" className="h-12 w-12 object-contain" />
+                  )}
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-muted text-sm leading-relaxed">
-                  {feature.description}
-                </p>
+                <h3 className="mb-3 text-xl font-semibold">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-muted">{feature.description}</p>
               </div>
             </MaskReveal>
           ))}

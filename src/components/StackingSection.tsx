@@ -1,10 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import React, { useEffect, useRef, useState } from "react";
 
 interface StackingSectionProps {
   children: React.ReactNode;
@@ -16,62 +12,53 @@ interface StackingSectionProps {
 export function StackingSection({
   children,
   index,
-  totalSections,
   backgroundColor = "bg-background",
 }: StackingSectionProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [isActive, setIsActive] = useState(index === 0);
+  const [progress, setProgress] = useState(index === 0 ? 1 : 0);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    const node = sectionRef.current;
+    if (!node) return;
 
-    const SCALE_MIN = 0.9; // 90% scale
-    const OVERLAP = 0.35; // 35% overlap
-    const SECTION_HEIGHT = window.innerHeight;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        const ratio = Math.min(1, Math.max(0, entry.intersectionRatio));
+        setProgress(ratio);
+        setIsActive(ratio > 0.35 || index === 0);
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
 
-    // For sections after the first one, apply stacking animation
-    if (index > 0 && sectionRef.current) {
-      const currentSection = sectionRef.current;
-      
-      // Find the previous section to use as trigger
-      const previousSection = currentSection.previousElementSibling as HTMLElement | null;
-      
-      if (previousSection) {
-        gsap.to(currentSection, {
-          scrollTrigger: {
-            trigger: previousSection,
-            start: "bottom 65%",
-            end: "bottom 35%",
-            scrub: 1.2,
-            markers: false,
-          },
-          y: -SECTION_HEIGHT * OVERLAP,
-          scale: SCALE_MIN,
-          transformOrigin: "top center",
-          ease: "power2.inOut",
-        });
-      }
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars?.trigger === sectionRef.current?.previousElementSibling) {
-          trigger.kill();
-        }
-      });
-    };
+    observer.observe(node);
+    return () => observer.disconnect();
   }, [index]);
 
+  const contentStyle = {
+    opacity: 1,
+    transform: isActive
+      ? "translate3d(0, 0, 0) scale(1)"
+      : `translate3d(0, ${8 + (1 - progress) * 12}px, 0) scale(${0.99 + progress * 0.01})`,
+    filter: "blur(0px)",
+  };
+
   return (
-    <div
+    <section
       ref={sectionRef}
       data-section-index={index}
-      className={`relative w-full min-h-screen ${backgroundColor}`}
+      className={`sticky top-0 flex min-h-screen w-full items-center justify-center overflow-visible ${backgroundColor}`}
       style={{
-        transformOrigin: "top center",
-        zIndex: 100 - index, // Higher z-index for later sections
+        zIndex: 10 + index,
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
+        willChange: "transform, opacity",
       }}
     >
-      {children}
-    </div>
+      <div className="flex w-full items-center justify-center" style={{ ...contentStyle, transition: "all 700ms cubic-bezier(0.22, 1, 0.36, 1)" }}>
+        {children}
+      </div>
+    </section>
   );
 }

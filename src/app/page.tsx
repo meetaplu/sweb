@@ -1,3 +1,4 @@
+import { Header } from "@/src/components/Header";
 import { Hero } from "@/src/components/sections/Hero";
 import { Features } from "@/src/components/sections/Features";
 import { TechStack } from "@/src/components/sections/TechStack";
@@ -15,20 +16,23 @@ const sections = [
 
 export default function Home() {
   return (
-    <main className="overflow-hidden bg-background text-foreground">
-      {sections.map((section, index) => {
-        const Component = section.component;
-        return (
-          <StackingSection
-            key={index}
-            index={index}
-            totalSections={sections.length}
-            backgroundColor={section.bg}
-          >
-            <Component />
-          </StackingSection>
-        );
-      })}
+    <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <Header />
+      <div className="relative">
+        {sections.map((section, index) => {
+          const Component = section.component;
+          return (
+            <StackingSection
+              key={index}
+              index={index}
+              totalSections={sections.length}
+              backgroundColor={section.bg}
+            >
+              <Component />
+            </StackingSection>
+          );
+        })}
+      </div>
     </main>
   );
 }
