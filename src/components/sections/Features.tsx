@@ -7,7 +7,7 @@ const features = [
   {
     icon: "💎",
     title: "Rare Gemstones",
-    description: "Curated selection of certified colored diamonds, rubies, emeralds & sapphires",
+    description: "Curated selection of certified Gemreserve.io assets, including Alexandrite and select fine stones",
   },
   {
     icon: "🔗",
@@ -60,7 +60,7 @@ export function Features() {
       <div className="relative z-10 mx-auto max-w-6xl">
         <MaskReveal direction="up" className="mb-4 text-center">
           <h2 className="text-4xl font-bold md:text-5xl lg:text-6xl">
-            Why Choose Gem Tokens?
+            Why Choose Gemreserve.io?
           </h2>
         </MaskReveal>
         <MaskReveal direction="up" delay={0.1} className="mx-auto mb-16 max-w-2xl text-center text-xl text-muted">

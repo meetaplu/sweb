@@ -38,24 +38,6 @@ export function CTA() {
           <MaskReveal direction="right" delay={0.7}><div><div className="mb-2 text-3xl font-bold text-amber-400">Secure</div><p className="text-muted">Insured Vaults</p></div></MaskReveal>
         </div>
       </div>
-
-      <div className="absolute bottom-0 w-full border-t border-gray-800 bg-gradient-to-r from-transparent via-black/50 to-transparent px-6 py-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-6 grid grid-cols-1 gap-6 text-sm text-muted md:grid-cols-3">
-            <div><p className="mb-2 font-semibold text-amber-400">Contact</p><p>Email: info@gemtokens.io</p><p>Phone: +1 (555) 123-4567</p></div>
-            <div><p className="mb-2 font-semibold text-amber-400">Address</p><p>123 Blockchain Avenue</p><p>Crypto City, CC 10001</p></div>
-            <div><p className="mb-2 font-semibold text-amber-400">Company</p><p>Gem Tokens Global Inc.</p><p>Founded: 2024</p></div>
-          </div>
-          <div className="flex flex-col items-center justify-between border-t border-gray-800 pt-6 text-xs text-muted md:flex-row">
-            <p>© 2024 Gem Tokens Global. All rights reserved.</p>
-            <div className="mt-4 flex gap-6 md:mt-0">
-              <a href="#" className="transition-colors hover:text-amber-400">Terms</a>
-              <a href="#" className="transition-colors hover:text-amber-400">Privacy</a>
-              <a href="#" className="transition-colors hover:text-amber-400">Twitter</a>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

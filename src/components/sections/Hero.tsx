@@ -40,7 +40,7 @@ export function Hero() {
 
         <MaskReveal direction="up" className="mb-10">
           <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
-            Invest in rare colored diamonds, rubies, emeralds, and sapphires. Tokenized. Redeemable. Secure.
+            Invest in certified Gemreserve.io gemstones with transparent provenance. Tokenized. Redeemable. Secure.
           </p>
         </MaskReveal>
 
@@ -54,14 +54,6 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2">
-        <div className="flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-sm text-amber-400/70">Scroll to explore</span>
-          <svg className="h-6 w-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
-      </div>
     </section>
   );
 }

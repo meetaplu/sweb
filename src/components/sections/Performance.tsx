@@ -5,8 +5,8 @@ import { MaskReveal } from "@/src/components/TextChoreography";
 
 const metrics = [
   { label: "Average Annual Growth", value: "8-12", unit: "%" },
-  { label: "Gemstones Tokenized", value: "500+", unit: "Lots" },
-  { label: "Total Value Locked", value: "$2.8M", unit: "USD" },
+  { label: "Gemstones Tokenized", value: "12", unit: "Assets" },
+  { label: "Portfolio Value", value: "€1.612B", unit: "" },
   { label: "Active Investors", value: "12K+", unit: "Users" },
 ];
 
@@ -40,31 +40,6 @@ export function Performance() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <MaskReveal direction="left" delay={0.2}>
-            <div className="rounded-3xl border border-gray-800 bg-[#1a1a1a] p-8 backdrop-blur-sm">
-              <h3 className="mb-6 text-2xl font-bold">Why Invest in Gems</h3>
-              <ul className="space-y-4 text-muted">
-                <li className="flex items-start gap-3"><span className="font-bold text-amber-400">•</span><span><strong className="text-white">Historical Value Growth:</strong> Consistent annual appreciation.</span></li>
-                <li className="flex items-start gap-3"><span className="font-bold text-amber-400">•</span><span><strong className="text-white">Tangible Asset:</strong> Physical ownership with real value.</span></li>
-                <li className="flex items-start gap-3"><span className="font-bold text-amber-400">•</span><span><strong className="text-white">Portfolio Diversification:</strong> Non-correlated to stocks.</span></li>
-                <li className="flex items-start gap-3"><span className="font-bold text-amber-400">•</span><span><strong className="text-white">Hedge Against Inflation:</strong> Gemstone values rise with inflation.</span></li>
-              </ul>
-            </div>
-          </MaskReveal>
-
-          <MaskReveal direction="right" delay={0.2}>
-            <div className="rounded-3xl border border-gray-800 bg-[#1a1a1a] p-8 backdrop-blur-sm">
-              <h3 className="mb-6 text-2xl font-bold">How Redemption Works</h3>
-              <ul className="space-y-4 text-muted">
-                <li className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-amber-400" /><span>Hold gem tokens for desired time.</span></li>
-                <li className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-amber-400" /><span>Request physical redemption anytime.</span></li>
-                <li className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-amber-400" /><span>Certified gem shipped insured to you.</span></li>
-                <li className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-amber-400" /><span>Full authentication documentation included.</span></li>
-              </ul>
-            </div>
-          </MaskReveal>
-        </div>
       </div>
     </section>
   );
