@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { MaskReveal } from "@/src/components/TextChoreography";
 
 const inventory = [
@@ -31,6 +31,21 @@ const totalCarats = inventory.reduce((sum, item) => sum + item.carats, 0);
 const totalPrice = inventory.reduce((sum, item) => sum + item.total, 0);
 
 export function Pricing() {
+  const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<(typeof inventory)[number] | null>(inventory[0]);
+
+  const filteredInventory = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return inventory;
+    return inventory.filter((item) => item.name.toLowerCase().includes(normalized));
+  }, [query]);
+
+  const chartValues = useMemo(() => {
+    if (!selected) return [54, 62, 58, 71, 86];
+    const base = selected.price / 1000;
+    return [Math.max(40, base - 10), Math.max(42, base - 6), Math.max(48, base), Math.max(54, base + 8), Math.max(60, base + 15)];
+  }, [selected]);
+
   return (
     <section className="relative min-h-screen overflow-hidden px-6 py-24 md:py-32">
       <div className="absolute inset-0 opacity-30 pointer-events-none">
@@ -42,7 +57,7 @@ export function Pricing() {
           <h2 className="text-4xl font-bold md:text-5xl lg:text-6xl">Gems Prices</h2>
         </MaskReveal>
         <MaskReveal direction="up" delay={0.08} className="mx-auto mb-8 max-w-3xl text-center text-lg text-white/70 md:text-xl">
-          Curated collection of certified precious gemstones ready for tokenization.
+          Search any gemstone to review its price, carat weight, reserve status, and live trend snapshot.
         </MaskReveal>
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70 md:px-6">
@@ -53,6 +68,18 @@ export function Pricing() {
           <div>
             <span className="mr-2 text-white/50">Total Price</span>
             <span className="font-semibold text-amber-300">{currency.format(totalPrice)}</span>
+          </div>
+        </div>
+
+        <div className="mb-6 flex flex-col gap-3 rounded-[1.5rem] border border-white/10 bg-[#161616]/80 p-4 shadow-[0_0_30px_rgba(251,191,36,0.06)] md:flex-row md:items-center md:justify-between md:p-5">
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search gem name"
+            className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-amber-400/40 md:max-w-sm"
+          />
+          <div className="text-sm text-white/60">
+            Showing {filteredInventory.length} of {inventory.length} gems
           </div>
         </div>
 
@@ -69,13 +96,17 @@ export function Pricing() {
                 </tr>
               </thead>
               <tbody>
-                {inventory.map((item) => (
+                {filteredInventory.map((item) => (
                   <tr key={item.name} className="rounded-2xl bg-white/5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10">
                     <td className="rounded-l-2xl px-4 py-4 sm:px-6">
-                      <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setSelected(item)}
+                        className="flex flex-col gap-1 text-left"
+                      >
                         <span className="text-sm font-semibold text-white">{item.name}</span>
                         <span className="text-xs uppercase tracking-[0.25em] text-white/40">Certified lot</span>
-                      </div>
+                      </button>
                     </td>
                     <td className="px-4 py-4 text-sm text-white/80 sm:px-6">{item.carats.toFixed(2)} ct</td>
                     <td className="px-4 py-4 text-sm text-amber-300 sm:px-6">{currency.format(item.price)}</td>
@@ -98,6 +129,51 @@ export function Pricing() {
             </table>
           </div>
         </MaskReveal>
+
+        {selected && (
+          <div className="mt-6 rounded-[2rem] border border-white/10 bg-[#141414]/95 p-5 shadow-[0_0_40px_rgba(251,191,36,0.08)] md:p-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Selected gem</p>
+                <h3 className="mt-2 text-2xl font-semibold text-white">{selected.name}</h3>
+                <p className="mt-2 max-w-xl text-sm leading-7 text-white/70">
+                  Certified gemstone lot with transparent provenance, secure storage, and premium redemption flexibility.
+                </p>
+              </div>
+              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+                <p className="text-white/50">Current price</p>
+                <p className="mt-1 text-2xl font-semibold text-amber-300">{currency.format(selected.price)}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carats</p>
+                <p className="mt-2 text-xl font-semibold text-white">{selected.carats.toFixed(2)} ct</p>
+              </div>
+              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Total lot value</p>
+                <p className="mt-2 text-xl font-semibold text-white">{currency.format(selected.total)}</p>
+              </div>
+              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Status</p>
+                <p className="mt-2 text-xl font-semibold text-white">{selected.status}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0d0d0d]/80 p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/60">Price trend</p>
+                <p className="text-sm text-amber-300">+12.4% vs last quarter</p>
+              </div>
+              <div className="flex h-28 items-end gap-2">
+                {chartValues.map((value, index) => (
+                  <div key={`${selected.name}-${index}`} className="flex-1 rounded-t-full bg-gradient-to-t from-amber-500 to-amber-300" style={{ height: `${value}%` }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
