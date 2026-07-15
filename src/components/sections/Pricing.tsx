@@ -137,32 +137,32 @@ export function Pricing() {
         </MaskReveal>
 
         {selected && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm">
-            <div className="relative w-full max-w-3xl rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_25%),_#101010] p-5 shadow-[0_0_60px_rgba(251,191,36,0.18)] md:p-8">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-6">
+            <div className="relative w-full max-w-3xl overflow-y-auto rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_25%),_#101010] p-4 shadow-[0_0_60px_rgba(251,191,36,0.18)] sm:rounded-[2rem] sm:p-6 md:p-8">
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-white/80 transition hover:bg-white/10 hover:text-white"
+                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-white/80 transition hover:bg-white/10 hover:text-white sm:right-4 sm:top-4 sm:h-10 sm:w-10"
                 aria-label="Close"
               >
                 ×
               </button>
 
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div className="max-w-2xl">
                   <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Selected gem</p>
-                  <h3 className="mt-2 text-2xl font-semibold text-white">{selected.name}</h3>
+                  <h3 className="mt-2 text-xl font-semibold text-white sm:text-2xl">{selected.name}</h3>
                   <p className="mt-2 text-sm leading-7 text-white/70">
                     Certified gemstone lot with transparent provenance, secure storage, and premium redemption flexibility.
                   </p>
                 </div>
                 <div className="rounded-[1.25rem] border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-white/80">
                   <p className="text-white/50">Current price</p>
-                  <p className="mt-1 text-2xl font-semibold text-amber-300">{currency.format(selected.price)}</p>
+                  <p className="mt-1 text-xl font-semibold text-amber-300 sm:text-2xl">{currency.format(selected.price)}</p>
                 </div>
               </div>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <div className="mt-6 grid gap-3 sm:gap-4 md:grid-cols-3">
                 <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
                   <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carats</p>
                   <p className="mt-2 text-xl font-semibold text-white">{selected.carats.toFixed(2)} ct</p>
@@ -177,12 +177,12 @@ export function Pricing() {
                 </div>
               </div>
 
-              <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0d0d0d]/80 p-4 sm:p-5">
-                <div className="mb-3 flex items-center justify-between">
+              <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0d0d0d]/80 p-3 sm:p-5">
+                <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/60">Price trend</p>
                   <p className="text-sm font-medium text-amber-300">+12.4% vs last quarter</p>
                 </div>
-                <div className="relative flex h-36 items-end gap-2 overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.01)_100%)] p-3">
+                <div className="relative flex h-32 items-end gap-2 overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.01)_100%)] p-3 sm:h-36">
                   <div className="absolute inset-0 rounded-[1.25rem] bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.16),_transparent_58%)]" />
                   {chartValues.map((value, index) => (
                     <div key={`${selected.name}-${index}`} className="relative flex-1 rounded-t-[999px] bg-gradient-to-t from-amber-600 via-amber-400 to-amber-200 shadow-[0_0_18px_rgba(251,191,36,0.35)]" style={{ height: `${value}%` }} />
