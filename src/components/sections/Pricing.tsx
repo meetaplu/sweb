@@ -32,7 +32,7 @@ const totalPrice = inventory.reduce((sum, item) => sum + item.total, 0);
 
 export function Pricing() {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<(typeof inventory)[number] | null>(inventory[0]);
+  const [selected, setSelected] = useState<(typeof inventory)[number] | null>(null);
 
   const filteredInventory = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -41,9 +41,15 @@ export function Pricing() {
   }, [query]);
 
   const chartValues = useMemo(() => {
-    if (!selected) return [54, 62, 58, 71, 86];
+    if (!selected) return [52, 66, 58, 74, 88];
     const base = selected.price / 1000;
-    return [Math.max(40, base - 10), Math.max(42, base - 6), Math.max(48, base), Math.max(54, base + 8), Math.max(60, base + 15)];
+    return [
+      Math.max(44, base - 10),
+      Math.max(46, base - 6),
+      Math.max(50, base),
+      Math.max(58, base + 8),
+      Math.max(64, base + 16),
+    ];
   }, [selected]);
 
   return (
@@ -131,45 +137,57 @@ export function Pricing() {
         </MaskReveal>
 
         {selected && (
-          <div className="mt-6 rounded-[2rem] border border-white/10 bg-[#141414]/95 p-5 shadow-[0_0_40px_rgba(251,191,36,0.08)] md:p-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Selected gem</p>
-                <h3 className="mt-2 text-2xl font-semibold text-white">{selected.name}</h3>
-                <p className="mt-2 max-w-xl text-sm leading-7 text-white/70">
-                  Certified gemstone lot with transparent provenance, secure storage, and premium redemption flexibility.
-                </p>
-              </div>
-              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
-                <p className="text-white/50">Current price</p>
-                <p className="mt-1 text-2xl font-semibold text-amber-300">{currency.format(selected.price)}</p>
-              </div>
-            </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm">
+            <div className="relative w-full max-w-3xl rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.18),_transparent_25%),_#101010] p-5 shadow-[0_0_60px_rgba(251,191,36,0.18)] md:p-8">
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-white/80 transition hover:bg-white/10 hover:text-white"
+                aria-label="Close"
+              >
+                ×
+              </button>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carats</p>
-                <p className="mt-2 text-xl font-semibold text-white">{selected.carats.toFixed(2)} ct</p>
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                <div className="max-w-2xl">
+                  <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Selected gem</p>
+                  <h3 className="mt-2 text-2xl font-semibold text-white">{selected.name}</h3>
+                  <p className="mt-2 text-sm leading-7 text-white/70">
+                    Certified gemstone lot with transparent provenance, secure storage, and premium redemption flexibility.
+                  </p>
+                </div>
+                <div className="rounded-[1.25rem] border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-white/80">
+                  <p className="text-white/50">Current price</p>
+                  <p className="mt-1 text-2xl font-semibold text-amber-300">{currency.format(selected.price)}</p>
+                </div>
               </div>
-              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Total lot value</p>
-                <p className="mt-2 text-xl font-semibold text-white">{currency.format(selected.total)}</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Status</p>
-                <p className="mt-2 text-xl font-semibold text-white">{selected.status}</p>
-              </div>
-            </div>
 
-            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0d0d0d]/80 p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/60">Price trend</p>
-                <p className="text-sm text-amber-300">+12.4% vs last quarter</p>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carats</p>
+                  <p className="mt-2 text-xl font-semibold text-white">{selected.carats.toFixed(2)} ct</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">Total lot value</p>
+                  <p className="mt-2 text-xl font-semibold text-white">{currency.format(selected.total)}</p>
+                </div>
+                <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">Status</p>
+                  <p className="mt-2 text-xl font-semibold text-white">{selected.status}</p>
+                </div>
               </div>
-              <div className="flex h-28 items-end gap-2">
-                {chartValues.map((value, index) => (
-                  <div key={`${selected.name}-${index}`} className="flex-1 rounded-t-full bg-gradient-to-t from-amber-500 to-amber-300" style={{ height: `${value}%` }} />
-                ))}
+
+              <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0d0d0d]/80 p-4 sm:p-5">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/60">Price trend</p>
+                  <p className="text-sm font-medium text-amber-300">+12.4% vs last quarter</p>
+                </div>
+                <div className="relative flex h-36 items-end gap-2 overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.01)_100%)] p-3">
+                  <div className="absolute inset-0 rounded-[1.25rem] bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.16),_transparent_58%)]" />
+                  {chartValues.map((value, index) => (
+                    <div key={`${selected.name}-${index}`} className="relative flex-1 rounded-t-[999px] bg-gradient-to-t from-amber-600 via-amber-400 to-amber-200 shadow-[0_0_18px_rgba(251,191,36,0.35)]" style={{ height: `${value}%` }} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
